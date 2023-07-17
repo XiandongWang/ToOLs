@@ -103,7 +103,20 @@ def cvt_vis2coco(img_path, anno_path, save_path, train_ratio=0.9, category_list=
 
 
 if __name__ == "__main__":
-
+    """
+    路径如下：
+    ├─VisDrone2019-DET-test-challenge
+    │  ├─images
+    ├─VisDrone2019-DET-test-dev
+    │  ├─annotations
+    │  ├─images
+    ├─VisDrone2019-DET-train
+    │  ├─annotations
+    │  ├─images
+    └─VisDrone2019-DET-val
+        ├─annotations
+        ├─images
+    """
     root_path = r'D:\data\detection\VisDrone'
     category_list = ['pedestrain', 'people', 'bicycle', 'car', 'van', 'truck', 'tricycle', 'awning-tricycle', 'bus',
                      'motor']
