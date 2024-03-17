@@ -11,13 +11,12 @@ def main():
     3. 当前image、categories、annotations三个key是必须要有的，其他的key值可以不存在，不影响实验结果。
     :return: json
     """
-    coco_format_save_path = r'D:\data\detection\VisDrone\VisDrone2019-DET-val'  # 要生成的标准coco格式标签所在文件夹
-    yolo_format_annotation_path = r'D:\data\detection\VisDrone\VisDrone2019-DET-val\labels'  # yolo格式标签所在文件夹
-    img_pathDir = r'D:\data\detection\VisDrone\VisDrone2019-DET-val\images'  # 图片所在文件夹
+    coco_format_save_path = './'  # 要生成的标准coco格式标签所在文件夹
+    yolo_format_annotation_path = './val/labels'  # yolo格式标签所在文件夹
+    img_pathDir = './val/images'  # 图片所在文件夹
 
     categories = []
-    class_names = ['pedestrian', 'people', 'bicycle', 'car', 'van',
-                   'truck', 'tricycle', 'awning-tricycle', 'bus', 'motor']
+    class_names = ['aircraft', 'oiltank', 'overpass', 'playground']
     for label in class_names:
         categories.append({'id': class_names.index(label), 'name': label})
 
@@ -27,7 +26,7 @@ def main():
     write_json_context['images'] = []
 
     imageFileList = os.listdir(img_pathDir)
-    img_id = 0
+    # img_id = 0
     anno_id = 0
 
     for i, imageFile in tqdm(enumerate(imageFileList)):
@@ -36,7 +35,8 @@ def main():
         W, H = image.size
         img_context = {}
         img_context['file_name'] = imageFile
-        img_context['id'] = img_id
+        # img_context['id'] = img_id
+        img_context['id'] = int(imageFile.split('.')[0])-10000
         img_context['width'] = W
         img_context['height'] = H
         write_json_context['images'].append(img_context)
@@ -60,12 +60,13 @@ def main():
             bbox_dict['bbox'] = [xmin, ymin, width, height]
             bbox_dict['category_id'] = class_id
             bbox_dict['id'] = anno_id
-            bbox_dict['image_id'] = img_id
+            # bbox_dict['image_id'] = img_id
+            bbox_dict['image_id'] = int(imageFile.split('.')[0])-10000
             bbox_dict['iscrowd'] = 0
 
             write_json_context['annotations'].append(bbox_dict)
             anno_id += 1
-        img_id += 1
+        # img_id += 1
     name = os.path.join(coco_format_save_path, "annotations" + '.json')
     with open(name, 'w') as fw:
         json.dump(write_json_context, fw, indent=4, ensure_ascii=False)
